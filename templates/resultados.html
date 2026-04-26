@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Resultados</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='resultados.css') }}">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+    
+    <!-- IZQUIERDA: LOGO -->
+    <div class="header-left">
+        <img src="{{ url_for('static', filename='logo.png') }}">
+        <h2>TEACHEASY</h2>
+    </div>
+
+    <!-- DERECHA: BOTÓN -->
+    <a href="{{ url_for('evaluaciones') }}" class="btn-volver">← Regresar</a>
+
+</header>
+
+
+<main id="reporte">
+
+<h1 class="titulo">Resultados del examen</h1>
+
+<input type="hidden" id="estado_examen" value="{{ info.estado }}">
+<input type="hidden" id="id_evaluacion" value="{{ info.id_evaluacion }}">
+
+<section class="info-box">
+    <div class="card"><span>Grupo</span><strong>{{ grupo.grado }} {{ grupo.letra }}</strong></div>
+    <div class="card"><span>Título</span><strong>{{ info.titulo }}</strong></div>
+    <div class="card"><span>Fecha</span><input type="date" id="fecha" value="{{ info.fecha }}"></div>
+    <div class="card"><span>Total preguntas</span><strong>{{ total_preguntas }}</strong></div>
+</section>
+
+<section id="tablaAlumnos"></section>
+
+<section class="resumen">
+    <h3>Evaluación general</h3>
+    <p id="porcentajeTexto"></p>
+    <p id="comentarioTexto"></p>
+</section>
+
+<section class="graficas">
+    <div class="grafica">
+        <h3>Desempeño</h3>
+        <canvas id="graficaGrupo"></canvas>
+    </div>
+    <div class="grafica">
+        <h3>Alumnos</h3>
+        <canvas id="graficaAlumnos"></canvas>
+    </div>
+</section>
+
+<div class="acciones">
+    <button onclick="guardarResultados()" class="btn">Guardar resultados</button>
+    <button onclick="descargarPDF()" class="btn-pdf">Exportar PDF</button>
+</div>
+
+</main>
+
+<script>
+window.onload = function () {
+
+    let alumnos = {{ alumnos|tojson|safe }};
+    let total = {{ total_preguntas }};
+    let estado = document.getElementById("estado_examen").value;
+    let id_evaluacion = document.getElementById("id_evaluacion").value;
+
+    let html = `
+    <div class="tabla-card">
+    <h3>Captura de resultados</h3>
+
+    <table id="tablaDatos">
+        <tr>
+            <th>#</th>
+            <th>Alumno</th>
+            <th>Total</th>
+            <th>Aciertos</th>
+            <th>Calificación</th>
+        </tr>
+    `;
+
+    alumnos.forEach((a,i) => {
+        html += `
+        <tr>
+            <td class="ranking">-</td>
+            <td>
+                <input type="hidden" class="idAlumno" value="${a.id_alumno}">
+                <input class="nombreAlumno" value="${a.nombre}" readonly>
+            </td>
+            <td>${total}</td>
+            <td>
+                <input type="number" class="aciertosAlumno" min="0">
+            </td>
+            <td>
+                <input class="calificacionAlumno" readonly>
+            </td>
+        </tr>`;
+    });
+
+    html += `
+    </table>
+
+    <div style="text-align:center; margin-top:20px;">
+        <button onclick="calcularResultados()" class="btn" id="btnCalcular">
+            Calcular resultados
+        </button>
+    </div>
+
+    </div>`;
+
+    document.getElementById("tablaAlumnos").innerHTML = html;
+
+    // 🔥 BUSCAR DATOS GUARDADOS
+    let guardado = localStorage.getItem("resultado_"+id_evaluacion);
+
+    if(guardado){
+
+        let info = JSON.parse(guardado);
+        let filas = document.querySelectorAll("#tablaDatos tr");
+
+        info.datos.forEach((alumno,i)=>{
+            let fila = filas[i+1];
+
+            fila.querySelector(".aciertosAlumno").value = alumno.aciertos;
+            fila.querySelector(".calificacionAlumno").value = alumno.calificacion;
+        });
+
+        // 🔥 restaurar textos
+        document.getElementById("porcentajeTexto").innerHTML = info.porcentaje;
+        document.getElementById("comentarioTexto").innerHTML = info.comentario;
+
+        // 🔥 reconstruir TODO
+        setTimeout(()=>{
+            calcularResultados();
+            bloquearPantalla();
+        },300);
+
+    }
+    else if(estado === "FINALIZADO"){
+        // fallback si no hay localStorage
+        bloquearPantalla();
+    }
+};
+function calcularResultados(){
+
+    let filas = document.querySelectorAll("#tablaDatos tr");
+    let total = {{ total_preguntas }};
+
+    let data = [];
+    let suma = 0;
+
+    filas.forEach((fila, i) => {
+        if(i===0) return;
+
+        let aciertosInput = fila.querySelector(".aciertosAlumno");
+        let calInput = fila.querySelector(".calificacionAlumno");
+        let nombre = fila.querySelector(".nombreAlumno").value;
+
+        let aciertos = parseFloat(aciertosInput.value || 0);
+
+        // 🔥 VALIDACIÓN
+        if(aciertos > total){
+            alert("Un alumno tiene más aciertos que el total");
+            aciertosInput.value = total;
+            aciertos = total;
+        }
+
+        let calificacion = (aciertos / total) * 10;
+        calInput.value = calificacion.toFixed(2);
+
+        // 🔥 COLORES
+        calInput.classList.remove("rojo","amarillo","verde");
+
+        if(calificacion < 6){
+            calInput.classList.add("rojo");
+        }else if(calificacion < 8){
+            calInput.classList.add("amarillo");
+        }else{
+            calInput.classList.add("verde");
+        }
+
+        suma += aciertos;
+
+        data.push({
+            fila,
+            nombre,
+            aciertos,
+            calificacion
+        });
+    });
+
+    // 🔥 ORDENAR (RANKING)
+    data.sort((a,b)=> b.calificacion - a.calificacion);
+
+    let tbody = document.querySelector("#tablaDatos");
+    data.forEach((item, index)=>{
+        item.fila.querySelector(".ranking").innerHTML = index+1;
+        tbody.appendChild(item.fila);
+    });
+
+    let porcentaje = (suma / (data.length * total)) * 100;
+
+    porcentajeTexto.innerHTML = `<b>${porcentaje.toFixed(1)}% de acierto</b>`;
+    comentarioTexto.innerHTML =
+        porcentaje>=85?"Excelente rendimiento":
+        porcentaje>=70?"Buen desempeño":
+        "Requiere refuerzo";
+
+    new Chart(graficaGrupo,{
+        type:'doughnut',
+        data:{labels:['Aciertos','Errores'],datasets:[{data:[porcentaje,100-porcentaje]}]}
+    });
+
+    new Chart(graficaAlumnos,{
+        type:'bar',
+        data:{
+            labels:data.map(d=>d.nombre),
+            datasets:[{data:data.map(d=>d.aciertos)}]
+        },
+        options:{plugins:{legend:{display:false}}}
+    });
+}
+function guardarResultados(){
+
+    let ids = document.querySelectorAll(".idAlumno");
+    let aciertos = document.querySelectorAll(".aciertosAlumno");
+
+    let total = {{ total_preguntas }};
+    let id_evaluacion = document.getElementById("id_evaluacion").value;
+    let fecha = document.getElementById("fecha").value;
+
+    let alumnos = [];
+
+    ids.forEach((id, i)=>{
+        alumnos.push({
+            id_alumno: id.value,
+            aciertos: parseFloat(aciertos[i].value || 0)
+        });
+    });
+
+    fetch("/guardar_resultados",{
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body: JSON.stringify({
+            id_evaluacion,
+            alumnos,
+            total_preguntas: total,
+            fecha
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+
+        alert(data.mensaje || "Guardado correctamente");
+
+        // 🔥 GUARDAR TODO EN LOCALSTORAGE
+        let datos = [];
+
+        document.querySelectorAll("#tablaDatos tr").forEach((fila,i)=>{
+            if(i===0) return;
+
+            datos.push({
+                nombre: fila.querySelector(".nombreAlumno").value,
+                aciertos: fila.querySelector(".aciertosAlumno").value,
+                calificacion: fila.querySelector(".calificacionAlumno").value
+            });
+        });
+
+        let info = {
+            datos: datos,
+            porcentaje: document.getElementById("porcentajeTexto").innerHTML,
+            comentario: document.getElementById("comentarioTexto").innerHTML,
+            estado: "FINALIZADO"
+        };
+
+        localStorage.setItem("resultado_"+id_evaluacion, JSON.stringify(info));
+
+        // 🔒 BLOQUEAR TODO
+        bloquearPantalla();
+
+        // ❌ quitar botón calcular
+        let btnCalcular = document.getElementById("btnCalcular");
+        if(btnCalcular) btnCalcular.remove();
+
+        // ❌ quitar botón guardar
+        let btnGuardar = document.querySelector(".acciones .btn");
+        if(btnGuardar) btnGuardar.remove();
+
+        // ✅ mostrar estado
+        let estado = document.createElement("div");
+        estado.className = "estado-finalizado";
+        estado.innerHTML = "✔ Evaluación FINALIZADA";
+        document.querySelector(".acciones").before(estado);
+
+    })
+    .catch(err => {
+        console.error(err);
+        alert("Error al guardar");
+    });
+}
+function descargarPDF(){
+
+    // 🔥 Espera a que las gráficas estén renderizadas
+    setTimeout(() => {
+
+        const elemento = document.getElementById("reporte");
+
+        html2pdf().set({
+            margin: 10,
+            filename: "reporte_resultados.pdf",
+
+            image: { type: 'jpeg', quality: 1 },
+
+            html2canvas: {
+                scale: 3,
+                useCORS: true,
+                scrollY: 0   // 🔥 evita cortes raros
+            },
+
+            jsPDF: {
+                unit: "mm",
+                format: "a4",
+                orientation: "portrait"
+            },
+
+            pagebreak: {
+                mode: ['css', 'legacy'] // 🔥 respeta .page-break
+            }
+
+        }).from(elemento).save();
+
+    }, 1000); // 🔥 tiempo extra para gráficas
+}
+
+
+function bloquearPantalla(){
+
+    // 🔒 bloquear toda la vista
+    document.getElementById("reporte").classList.add("bloqueado");
+
+    // 🔒 desactivar inputs
+    document.querySelectorAll("input").forEach(inp => {
+        inp.disabled = true;
+    });
+
+    // 🔒 quitar botón calcular
+    let btn = document.getElementById("btnCalcular");
+    if(btn) btn.remove();
+
+    // 🔒 quitar botón guardar
+    let btnGuardar = document.querySelector(".acciones .btn");
+    if(btnGuardar) btnGuardar.remove();
+
+   
+}
+</script>
+
+</body>
+</html>

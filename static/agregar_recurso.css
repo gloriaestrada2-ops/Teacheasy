@@ -1,0 +1,241 @@
+/* ====== Estilo general ====== */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+h2 {
+    text-align: center;
+    color: #2e8b1e;
+    margin-top: 20px;
+}
+
+/* ====== Formulario ====== */
+form {
+    background-color: #fff;
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 25px 30px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+}
+
+form label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+    color: #333;
+}
+
+form input[type="text"],
+form input[type="number"],
+form textarea,
+form select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+form textarea {
+    resize: vertical;
+    height: 80px;
+}
+
+form button {
+    background-color: #2e8b1e;
+    color: #fff;
+    border: none;
+    padding: 12px 25px;
+    margin-top: 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+form button:hover {
+    background-color: #267214;
+}
+
+/* ====== Enlace volver ====== */
+a {
+    color: #2e8b1e;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    margin: 15px 30px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* ====== Mensaje de error ====== */
+p {
+    color: red;
+    text-align: center;
+    font-weight: bold;
+}
+
+.grupo-input textarea {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    resize: none;
+    height: 80px;
+}
+/* ====== BARRA SUPERIOR ====== */
+
+.barra-superior {
+    background-color: #2e8b1e;
+    padding: 15px 30px;
+    color: white;
+}
+
+.barra-contenido {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.panel-texto {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.volver {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.volver:hover {
+    text-decoration: underline;
+}
+
+
+/* ====== Botón Cancelar ====== */
+.btn-cancelar {
+    background-color: #dc3545; /* rojo */
+    color: white; /* letras blancas */
+    padding: 12px 25px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 16px;
+    display: inline-block;
+    margin-top: 20px;
+    transition: 0.3s;
+}
+
+.btn-cancelar:hover {
+    background-color: #b02a37; /* rojo más oscuro al pasar el mouse */
+}
+
+
+
+/* Caja de subida */
+.upload-box {
+    border: 2px dashed #4a90e2;
+    border-radius: 12px;
+    padding: 25px;
+    text-align: center;
+    cursor: pointer;
+    background: #f8fbff;
+    transition: all 0.3s ease;
+}
+
+.upload-box:hover {
+    background: #eaf4ff;
+    border-color: #2c6ed5;
+}
+
+/* Contenido */
+.upload-content p {
+    margin: 5px 0;
+    color: #333;
+}
+
+.upload-content span {
+    font-size: 12px;
+    color: #777;
+}
+
+/* Icono */
+.icono {
+    font-size: 40px;
+}
+/* Contenedor del archivo seleccionado */
+.file-info {
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+
+    background: #f4f8ff;
+    border: 1px solid #dbe6ff;
+    border-left: 4px solid #4a90e2;
+
+    padding: 10px 12px;
+    border-radius: 10px;
+
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    animation: fadeIn 0.3s ease;
+}
+
+/* Nombre del archivo */
+#nombre-archivo {
+    font-size: 14px;
+    color: #2c3e50;
+    font-weight: 500;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 220px;
+}
+
+/* Botón eliminar (X) */
+.btn-eliminar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #ff4d4d;
+    color: white;
+    border: none;
+
+    width: 20px;
+    height: 24px;
+    
+
+    font-size: 12px;
+    cursor: pointer;
+
+    transition: all 0.3s ease;
+}
+
+/* Hover bonito */
+.btn-eliminar:hover {
+    background: #d93636;
+    transform: scale(1.1);
+}
+
+/* Animación suave */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

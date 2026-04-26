@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Usuario - TEACHEASY</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='editar_usuario.css') }}">
+</head>
+
+<body>
+
+    <!-- Barra superior -->
+    <div class="barra-superior">
+        <div class="barra-contenido">
+            <span class="panel-texto">Editar Usuario</span>
+            <a href="{{ url_for('modulo_administracion') }}" class="volver">
+                ← Volver al módulo
+            </a>
+        </div>
+    </div>
+
+
+       {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+            <div id="mensaje-exito" class="mensaje-exito">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+    <div class="contenedor-formulario">
+
+        <div class="card-formulario">
+
+            <h2>Modificar datos del usuario</h2>
+
+            <form method="POST" action="{{ url_for('actualizar_usuario_ruta') }}">
+
+                <!-- ID oculto -->
+                <input type="hidden" name="id_usuario" value="{{ usuario.id_usuario }}">
+
+                <!-- Nombre -->
+                <div class="grupo-input">
+                    <label>Nombre</label>
+                    <input type="text" name="nombre" 
+                           value="{{ usuario.nombre }}" required>
+                </div>
+
+                <!-- Rol -->
+                <div class="grupo-input">
+                    <label>Rol</label>
+                    <select name="rol">
+                        <option value="DOCENTE"
+                        {% if usuario.rol == 'DOCENTE' %}selected{% endif %}>
+                        DOCENTE
+                        </option>
+
+                        <option value="ADMIN"
+                        {% if usuario.rol == 'ADMIN' %}selected{% endif %}>
+                        ADMIN
+                        </option>
+
+                        <option value="INACTIVO"
+                        {% if usuario.rol == 'INACTIVO' %}selected{% endif %}>
+                        INACTIVO
+                        </option>
+                    </select>
+                </div>
+
+                <!-- Correo -->
+                <div class="grupo-input">
+                    <label>Correo</label>
+                    <input type="email" name="correo" 
+                           value="{{ usuario.correo }}" required>
+                </div>
+
+                <!-- Botones -->
+                <div class="botones">
+                    <button type="submit" class="btn-guardar">
+                        ✓ Guardar cambios
+                    </button>
+
+                    <a href="{{ url_for('modulo_administracion') }}" 
+                       class="btn-cancelar">
+                        ✕ Cancelar
+                    </a>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+        <script>
+    setTimeout(function() {
+        var mensaje = document.getElementById("mensaje-exito");
+        if (mensaje) {
+            mensaje.style.transition = "opacity 0.5s";
+            mensaje.style.opacity = "0";
+            setTimeout(function(){
+                mensaje.style.display = "none";
+            }, 500);
+        }
+    }, 5000); // 5000 milisegundos = 5 segundos
+</script>
+
+</body>
+</html>

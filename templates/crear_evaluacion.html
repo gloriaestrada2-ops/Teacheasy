@@ -1,0 +1,246 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Crear nueva evaluación</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='crear_evaluaciones.css') }}">
+
+</head>
+
+<body class="body-evaluaciones">
+
+<!-- Barra superior -->
+<div class="barra-superior">
+    <span>Crear nueva evaluación</span>
+    <a href="{{ url_for('evaluaciones') }}" class="volver">Regresar</a>
+</div>
+
+<!-- Logo -->
+<div class="logo-superior">
+    <img src="{{ url_for('static', filename='logo.png') }}">
+    <h1>TEACHEASY</h1>
+</div>
+
+<div class="contenedor-crear">
+
+<h2>Crear nueva evaluación</h2>
+
+<form id="formEvaluacion" action="{{ url_for('crear_evaluacion') }}" method="POST">
+
+<!-- Título -->
+<label>Título de la evaluación</label>
+<input type="text" name="titulo" required>
+
+<!-- Fecha -->
+<label>Fecha del examen</label>
+<input type="date" name="fecha" required>
+
+<!-- Unidad -->
+<label>Unidad</label>
+<select name="unidad" id="unidad" required>
+<option value="">Seleccionar</option>
+<option value="1">Unidad 1</option>
+<option value="2">Unidad 2</option>
+<option value="3">Unidad 3</option>
+</select>
+
+<!-- Temas -->
+<label>Temas de la unidad</label>
+<div id="contenedor-temas" class="contenedor-temas">
+    <p style="color:gray">Selecciona primero una unidad</p>
+</div>
+
+
+<!-- 🔥 PRIMERO TOTAL DE PREGUNTAS --> 
+ <label>Total de preguntas</label> 
+ <input type="number" id="totalPreguntas" min="1" required> 
+ <br><br>
+
+<!-- TIPOS DE EVALUACIÓN -->
+<label>Tipos de evaluación</label>
+
+<div id="tipos-evaluacion" class="tipos-grid">
+
+<label class="tipo-item">
+    <input type="checkbox" class="tipo" value="multiple">
+    
+    <div class="tipo-contenido">
+        <div class="tipo-header">
+            <span>Opción múltiple</span>
+            <span class="porcentaje" id="p-multiple">0%</span>
+        </div>
+        <div class="barra">
+            <div class="barra-fill" id="bar-multiple"></div>
+        </div>
+    </div>
+
+</label>
+
+<label class="tipo-item">
+    <input type="checkbox" class="tipo" value="verdadero_falso">
+    
+    <div class="tipo-contenido">
+        <div class="tipo-header">
+            <span>Verdadero o falso</span>
+            <span class="porcentaje" id="p-verdadero_falso">0%</span>
+        </div>
+        <div class="barra">
+            <div class="barra-fill" id="bar-verdadero_falso"></div>
+        </div>
+    </div>
+
+</label>
+
+<label class="tipo-item">
+    <input type="checkbox" class="tipo" value="abierta">
+    
+    <div class="tipo-contenido">
+        <div class="tipo-header">
+            <span>Pregunta abierta</span>
+            <span class="porcentaje" id="p-abierta">0%</span>
+        </div>
+        <div class="barra">
+            <div class="barra-fill" id="bar-abierta"></div>
+        </div>
+    </div>
+
+</label>
+
+</div>
+
+<br>
+
+
+<!-- INPUT OCULTO -->
+<input type="hidden" name="configuracion_tipos" id="configuracionTipos">
+
+<button type="submit" class="btn-generar">
+✔ Generar evaluación PDF
+</button>
+
+</form>
+
+</div>
+
+<!-- MENSAJE DE EXITO -->
+<div id="mensajeExito" class="mensaje-exito" style="display:none;">
+✔ Evaluación creada exitosamente
+</div>
+
+<!-- SCRIPT TEMAS -->
+<script>
+document.getElementById("unidad").addEventListener("change", function(){
+
+const idUnidad = this.value
+const contenedor = document.getElementById("contenedor-temas")
+
+contenedor.innerHTML = "Cargando temas..."
+
+fetch("/temas_por_unidad/" + idUnidad)
+.then(response => response.json())
+.then(data => {
+
+contenedor.innerHTML = ""
+
+data.forEach(function(tema){
+
+const div = document.createElement("div")
+div.className = "tema-item"
+
+div.innerHTML = `
+<label>
+<input type="checkbox" name="tema" value="${tema.id_tema}">
+${tema.nombre}
+</label>
+`
+
+contenedor.appendChild(div)
+
+})
+
+})
+
+})
+</script>
+
+<!-- SCRIPT DISTRIBUCIÓN + BARRA -->
+<script>
+
+const checkboxes = document.querySelectorAll(".tipo")
+const totalInput = document.getElementById("totalPreguntas")
+const inputHidden = document.getElementById("configuracionTipos")
+
+function calcularDistribucion(){
+
+const seleccionados = Array.from(checkboxes).filter(c => c.checked)
+const totalTipos = seleccionados.length
+const totalPreguntas = parseInt(totalInput.value)
+
+// RESET
+checkboxes.forEach(c => {
+    document.getElementById("p-" + c.value).innerText = "0%"
+    document.getElementById("bar-" + c.value).style.width = "0%"
+})
+
+if(totalTipos === 0 || !totalPreguntas){
+    inputHidden.value = ""
+    return
+}
+
+const porcentaje = 100 / totalTipos
+const preguntasPorTipo = Math.floor(totalPreguntas / totalTipos)
+
+let config = []
+
+seleccionados.forEach(tipo => {
+
+const porcentajeTexto = porcentaje.toFixed(0) + "%"
+
+document.getElementById("p-" + tipo.value).innerText = porcentajeTexto
+document.getElementById("bar-" + tipo.value).style.width = porcentajeTexto
+
+config.push({
+    tipo: tipo.value,
+    porcentaje: porcentaje,
+    preguntas: preguntasPorTipo
+})
+
+})
+
+inputHidden.value = JSON.stringify(config)
+
+}
+
+// Eventos
+checkboxes.forEach(c => c.addEventListener("change", calcularDistribucion))
+totalInput.addEventListener("input", calcularDistribucion)
+
+</script>
+
+<!-- SCRIPT MENSAJE -->
+<script>
+
+const form = document.getElementById("formEvaluacion")
+
+form.addEventListener("submit", function(){
+
+setTimeout(function(){
+
+const mensaje = document.getElementById("mensajeExito")
+mensaje.style.display = "block"
+
+setTimeout(function(){
+mensaje.style.display = "none"
+},3000)
+
+},1500)
+
+})
+
+</script>
+
+</body>
+</html>
+

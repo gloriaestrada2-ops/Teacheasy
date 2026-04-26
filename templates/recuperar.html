@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Recuperar contraseña - TEACHEASY</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='recuperar.css') }}">
+</head>
+
+<body>
+
+
+<!-- Barra superior verde -->
+<div class="barra-superior">
+    <div class="barra-contenido">
+        <span></span>
+        <a href="{{ url_for('login') }}" class="cerrar">Regresar</a>
+    </div>
+</div>
+
+    <img src="{{ url_for('static', filename='fondo.png') }}" 
+     class="imagen-superior" 
+     alt="Decoración">
+
+
+    <img src="{{ url_for('static', filename='fondo1.png') }}" 
+     class="imagen-derecha-abajo" 
+     alt="Decoración">
+
+<div class="container">
+    <div class="recuperar-box">
+
+        <!-- Logo y nombre -->
+        <div class="titulo-con-logo">
+            <img src="{{ url_for('static', filename='logo.png') }}" 
+                 class="logo" 
+                 alt="Logo">
+
+            <h1 class="titulo">TEACHEASY</h1>
+        </div>
+
+        <h2 class="subtitulo">Restablece tu contraseña</h2>
+
+        <p class="descripcion">
+            Recibirás las instrucciones para restablecer tu
+            contraseña en el siguiente correo:
+        </p>
+
+        <form method="POST">
+            <input type="email" 
+                   name="correo"
+                   placeholder="Email" 
+                   class="input-email"
+                   required>
+
+            <button type="submit" class="btn-enviar">
+                Enviar
+            </button>
+        </form>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="mensaje {{ category }}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+    </div>
+</div>
+
+
+
+
+<script>
+setTimeout(() => {
+    const mensajes = document.querySelectorAll('.mensaje');
+    mensajes.forEach(mensaje => {
+        mensaje.style.opacity = "0";
+        mensaje.style.transition = "opacity 0.5s";
+        setTimeout(() => mensaje.remove(), 500);
+    });
+}, 3000);
+</script>
+</body>
+</html>

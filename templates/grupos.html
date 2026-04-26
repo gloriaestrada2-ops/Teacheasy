@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Grupos - TEACHEASY</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='grupo.css') }}">
+</head>
+
+<body class="body-panel">
+
+    <!-- MENSAJES -->
+    <!-- MENSAJES TOAST -->
+<div id="toast-container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="toast {{ category }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endwith %}
+</div>
+
+    <!-- Barra superior -->
+    <div class="barra-superior">
+        <div class="barra-contenido">
+            <span class="panel-texto">Gestión de Grupos</span>
+            <a href="{{ url_for('modulo_administracion') }}" class="volver">Volver</a>
+        </div>
+    </div>
+
+    <div class="panel-container">
+
+        <h2 class="titulo-panel">Administrar Grupos</h2>
+
+        <!-- CREAR GRUPO -->
+        <div class="seccion">
+            <h3>🏫 Crear grupo</h3>
+
+            <form action="{{ url_for('crear_grupo') }}" method="POST" class="form-grupo">
+                <input type="number" name="grado" placeholder="Grado (Ej: 6)" required>
+                <input type="text" name="letra" placeholder="Letra (A, B, C...)" required>
+
+                <select name="id_maestro" required>
+                    <option value="">Seleccionar maestro</option>
+                    {% for maestro in maestros %}
+                        <option value="{{ maestro.id_usuario }}">{{ maestro.nombre }}</option>
+                    {% endfor %}
+                </select>
+
+                <button type="submit" class="btn-agregar">Crear grupo</button>
+            </form>
+        </div>
+
+        <!-- LISTADO DE GRUPOS -->
+        {% for grupo in grupos %}
+
+        <div class="seccion">
+
+            <h3>📚 Grupo: {{ grupo.grado }}° {{ grupo.letra }}</h3>
+
+            <!-- MAESTRO -->
+            <p>
+                <strong>👨‍🏫 Maestro:</strong> 
+                {{ grupo.maestro if grupo.maestro else "Sin asignar" }}
+
+                <button type="button" onclick="toggleForm('form-maestro-{{ grupo.id_grupo }}')" class="btn-mini">
+                    ✏️
+                </button>
+            </p>
+
+            <!-- FORM EDITAR MAESTRO -->
+            <form id="form-maestro-{{ grupo.id_grupo }}" 
+                  action="{{ url_for('actualizar_maestro') }}" 
+                  method="POST" 
+                  class="form-inline form-oculto">
+
+                <input type="hidden" name="id_grupo" value="{{ grupo.id_grupo }}">
+
+                <select name="id_maestro" required>
+                    {% for maestro in maestros %}
+                        <option value="{{ maestro.id_usuario }}"
+                            {% if maestro.nombre == grupo.maestro %} selected {% endif %}>
+                            {{ maestro.nombre }}
+                        </option>
+                    {% endfor %}
+                </select>
+
+                <button type="submit" class="btn-agregar">Guardar</button>
+            </form>
+
+            <!-- AGREGAR ALUMNO -->
+            <h4>
+                <button type="button" onclick="toggleForm('form-alumno-{{ grupo.id_grupo }}')" class="btn-mini">+</button>
+                Agregar alumno
+            </h4>
+
+            <form id="form-alumno-{{ grupo.id_grupo }}" 
+                  action="{{ url_for('agregar_alumno') }}" 
+                  method="POST" 
+                  class="form-inline form-oculto">
+
+                <input type="hidden" name="id_grupo" value="{{ grupo.id_grupo }}">
+
+                <input type="text" 
+                       name="curp" 
+                       placeholder="CURP"
+                       required
+                       maxlength="18"
+                       pattern="[A-Z]{4}[0-9]{6}[A-Z]{6}[0-9]{2}"
+                       title="CURP inválida"
+                       style="text-transform: uppercase;">
+
+                <input type="text" 
+                       name="nombre" 
+                       placeholder="Nombre completo"
+                       required
+                       pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ ]{10,}"
+                       title="Nombre mínimo 10 letras">
+
+                <button type="submit" class="btn-agregar">Agregar</button>
+            </form>
+
+            <!-- TABLA -->
+            <h4>👨‍🎓 Alumnos del grupo</h4>
+
+            <!-- BUSCADOR -->
+            <input type="text" 
+                   placeholder="🔍 Buscar por nombre o CURP..." 
+                   onkeyup="filtrarTabla('{{ grupo.id_grupo }}', this.value)">
+
+            <!-- SCROLL -->
+            <div class="tabla-scroll">
+
+                <table class="tabla-usuarios" id="tabla-{{ grupo.id_grupo }}">
+                    <thead>
+                        <tr>
+                            <th>CURP</th>
+                            <th>Nombre completo</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% if grupo.alumnos %}
+                            {% for alumno in grupo.alumnos %}
+
+                            <!-- FILA NORMAL -->
+                            <tr>
+                                <td>{{ alumno.curp }}</td>
+                                <td>{{ alumno.nombre }}</td>
+                                <td>
+
+                                  
+
+                                      <!-- BOTON EDITAR -->
+                                    <button class="btn-accion btn-editar" onclick="abrirModal('{{ alumno.id_alumno }}','{{ alumno.curp }}','{{ alumno.nombre }}')">
+                                       ✏️
+                                    </button>
+                                    
+                                    <a href="{{ url_for('eliminar_alumno', id_alumno=alumno.id_alumno) }}"
+                                       class="btn-accion btn-eliminar"
+                                       onclick="return confirm('¿Eliminar alumno?')">
+                                       ❌
+                                    </a>
+
+                                </td>
+                            </tr>
+
+                            
+
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="3">No hay alumnos en este grupo</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <br>
+
+            <!-- ELIMINAR GRUPO -->
+            <a href="{{ url_for('eliminar_grupo', id_grupo=grupo.id_grupo) }}"
+               class="btn-eliminar"
+               onclick="return validarEliminarGrupo({{ grupo.alumnos|length }})">
+               ❌ Eliminar grupo
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    <!-- ===== MODAL EDITAR ALUMNO ===== -->
+<div id="modalEditar" class="modal">
+
+    <div class="modal-contenido">
+        <span class="cerrar" onclick="cerrarModal()">✖</span>
+
+        <h3>Editar alumno</h3>
+
+        <form action="{{ url_for('actualizar_alumno') }}" method="POST">
+
+            <input type="hidden" id="modal_id" name="id_alumno">
+
+            <input type="text" id="modal_curp" name="curp" required>
+
+            <input type="text" id="modal_nombre" name="nombre" required>
+
+            <button type="submit" class="btn-agregar">Guardar cambios</button>
+        </form>
+    </div>
+
+</div>
+
+    <!-- SCRIPTS -->
+    <script>
+    function toggleForm(id) {
+        let form = document.getElementById(id);
+
+        if (form.style.display === "none" || form.style.display === "") {
+            form.style.display = "flex";
+        } else {
+            form.style.display = "none";
+        }
+    }
+
+    function filtrarTabla(id, texto) {
+        let input = texto.toLowerCase();
+        let tabla = document.getElementById("tabla-" + id);
+        let filas = tabla.getElementsByTagName("tr");
+
+        for (let i = 1; i < filas.length; i++) {
+            let curp = filas[i].getElementsByTagName("td")[0];
+            let nombre = filas[i].getElementsByTagName("td")[1];
+
+            if (curp && nombre) {
+                let textoFila = (curp.textContent + " " + nombre.textContent).toLowerCase();
+                filas[i].style.display = textoFila.includes(input) ? "" : "none";
+            }
+        }
+    }
+
+    function validarEliminarGrupo(totalAlumnos) {
+        if (totalAlumnos > 0) {
+            alert("❌ No puedes eliminar el grupo porque tiene alumnos asignados");
+            return false;
+        }
+        return confirm("¿Eliminar grupo?");
+    }
+    </script>
+
+
+
+<script>
+// ===== MODAL =====
+function abrirModal(id, curp, nombre) {
+    document.getElementById("modalEditar").style.display = "flex";
+
+    document.getElementById("modal_id").value = id;
+    document.getElementById("modal_curp").value = curp;
+    document.getElementById("modal_nombre").value = nombre;
+}
+
+function cerrarModal() {
+    document.getElementById("modalEditar").style.display = "none";
+}
+
+
+
+// ===== TOAST AUTO OCULTAR =====
+setTimeout(() => {
+    const toasts = document.querySelectorAll(".toast");
+
+    toasts.forEach((toast, index) => {
+        setTimeout(() => {
+            toast.style.opacity = "0";
+            toast.style.transform = "translateX(100%)";
+
+            setTimeout(() => {
+                toast.remove();
+            }, 500);
+
+        }, index * 300); // efecto escalonado si hay varios mensajes
+    });
+
+}, 3000);
+</script>
+
+
+</body>
+</html>

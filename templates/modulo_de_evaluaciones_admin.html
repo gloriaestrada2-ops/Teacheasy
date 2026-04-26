@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>TEACHEASY - Evaluaciones (Admin)</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='evaluaciones_adm.css') }}">
+</head>
+
+<body class="body-evaluaciones">
+
+<!-- Barra superior -->
+<div class="barra-superior">
+    <span>Módulo de Evaluaciones (Administrador)</span>
+    <a href="{{ url_for(panel) }}" class="volver">Volver al Panel Principal</a>
+</div>
+
+<!-- Logo -->
+<div class="logo-superior">
+    <img src="{{ url_for('static', filename='logo.png') }}">
+    <h1>TEACHEASY</h1>
+</div>
+
+<!-- Decoraciones -->
+<img src="{{ url_for('static', filename='ico.png') }}" class="imagen-izquierda">
+<img src="{{ url_for('static', filename='fondo1.png') }}" class="imagen-derecha">
+
+<!-- Contenedor -->
+<div class="contenedor-evaluaciones">
+
+<h2>Gestión de Evaluaciones</h2>
+
+<img src="{{ url_for('static', filename='evalua.png') }}" class="icono-evaluacion">
+
+<!-- 🔥 FILTROS -->
+<form method="GET" class="filtros" id="formFiltros">
+
+<div class="filtro-grupo">
+    <label><span>👨‍🏫</span> Docente</label>
+    
+    <select name="docente" id="docente">
+        <option value="">Todos</option>
+        {% for d in docentes %}
+            <option value="{{ d[0] }}">{{ d[1] }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+<div class="filtro-grupo">
+    <label><span>🏫</span> Grupo</label>
+    
+    <select name="grupo" id="grupo">
+        <option value="">Todos</option>
+        {% for g in grupos %}
+            <option value="{{ g[0] }}">{{ g[1] }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+<div class="acciones-filtro">
+    <button type="submit" class="btn-filtrar">🔍 Filtrar</button>
+    <button type="button" class="btn-limpiar" onclick="limpiarFiltros()">Limpiar</button>
+</div>
+
+</form>
+
+<!-- TABLA -->
+<table class="tabla-evaluaciones">
+
+<thead>
+<tr>
+<th>Nombre</th>
+<th>Fecha</th>
+<th>Estado</th>
+<th>Docente</th>
+<th>Grupo</th>
+<th>Resultados</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for e in evaluaciones %}
+
+<tr onclick="seleccionarExamen({{ e.id_pdf }}, '/{{ e.ruta }}')" id="fila{{ e.id_pdf }}">
+
+<td>{{ e.nombre }}</td>
+
+<td>{{ e.fecha.strftime('%d/%m/%Y') }}</td>
+
+<td>{{ e.estado }}</td>
+
+<td>{{ e.docente }}</td>
+
+<td>{{ e.grupo }}</td>
+
+<td>
+
+  {% if e.estado == "FINALIZADO" %}
+    <a href="{{ url_for('resultados', id_evaluacion=e.id_evaluacion) }}" class="btn-resultados">
+      📊 Ver resultados
+    </a>
+
+  {% else %}
+    <span class="btn-resultados deshabilitado">
+      ⛔ No disponible
+    </span>
+  {% endif %}
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+<button class="btn-imprimir" onclick="imprimirExamen()">
+🖨 Imprimir examen seleccionado
+</button>
+
+</div>
+
+<!-- SCRIPT -->
+
+<script>
+
+let pdfSeleccionado = null
+
+function seleccionarExamen(id, ruta){
+
+    pdfSeleccionado = ruta
+
+    document.querySelectorAll("tr").forEach(f=>{
+        f.style.background=""
+    })
+
+    document.getElementById("fila"+id).style.background="#dfefff"
+}
+
+function imprimirExamen(){
+
+    if(pdfSeleccionado==null){
+        alert("Selecciona un examen primero")
+        return
+    }
+
+    let ventana = window.open(pdfSeleccionado)
+
+    ventana.onload = function(){
+        ventana.print()
+    }
+}
+
+</script>
+
+<script>
+
+
+// 🔥 LIMPIAR FILTROS
+function limpiarFiltros(){
+    window.location.href = "/evaluaciones"
+}
+
+</script>
+
+</body>
+</html>

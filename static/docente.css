@@ -1,0 +1,141 @@
+/* ============================
+   PANEL DOCENTE
+============================ */
+
+.body-panel {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #f4f6f9;
+}
+
+/* Barra verde superior */
+.barra-superior {
+    background: #3cab2f;
+    padding: 15px 30px;
+    color: white;
+}
+
+.barra-contenido {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.panel-texto {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.cerrar {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.cerrar:hover {
+    text-decoration: underline;
+}
+
+/* Contenedor */
+.panel-container {
+    text-align: center;
+    padding: 0px 20px;
+}
+
+
+/* Logo */
+.logo-panel {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 0px 40px;   /* espacio desde la izquierda */
+    
+}
+
+.logo-panel h1 {
+    font-size: 30px;
+    margin: 0;
+}
+
+.logo {
+    width: 80px;
+}
+
+
+/* Título */
+.titulo-panel {
+    margin-top: -50px;
+    font-size: 32px;
+    font-weight: 500;
+}
+
+/* Tarjetas */
+
+
+
+
+.cards {
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);  /* columnas flexibles */
+    gap: 40px;   /* espacio entre columnas y filas */
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.card-centro {
+    grid-column: span 2;
+    justify-self: center;
+}
+
+.card {
+    background: #3cab2f;
+    padding: 25px;
+    border-radius: 15px;
+    text-decoration: none;
+    color: white;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    transition: 0.3s;
+}
+
+
+.card img {
+    width: 150px;
+    margin-bottom: 15px;
+}
+
+.card h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.2);
+}
+
+/* Tarjeta del centro más grande */
+.card-centro {
+    width: 300px;
+    background: linear-gradient(135deg, #3cab2f, #2e8b1e);
+}
+
+.imagen-esquina {
+    position: fixed;     /* Se fija en la pantalla */
+    bottom: 0;           /* Abajo */
+    left: 0;             /* Izquierda */
+    width: 200px;        /* Ajusta tamaño */
+    height: auto;
+    z-index: 0;          /* Detrás del contenido */
+    left: 50px;
+}
+
+.imagen-derecha-abajo {
+    position: fixed;   /* Fija en la pantalla */
+    bottom: 0px;      /* 10px desde abajo */
+    right: 0px;       /* 10px desde la derecha */
+    width: 430px;      /* Ajusta tamaño */
+    height: auto;
+    z-index: 0;        /* Detrás del login */
+}

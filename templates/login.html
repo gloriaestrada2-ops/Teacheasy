@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>TEACHEASY - Inicio de Sesión</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+    <img src="{{ url_for('static', filename='fondo.png') }}" 
+     class="imagen-superior" 
+     alt="Decoración">
+
+
+    <img src="{{ url_for('static', filename='ingles.png') }}" 
+     class="imagen-esquina" 
+     alt="Decoración">
+
+    <img src="{{ url_for('static', filename='fondo1.png') }}" 
+     class="imagen-derecha-abajo" 
+     alt="Decoración">
+<body>
+    
+
+    <!-- Barra superior verde -->
+    <div class="barra-superior">
+        <div class="barra-contenido">
+            <a href="{{ url_for('registro') }}" class="registrarse">
+                Registrarse
+            </a>
+        </div>
+    </div>
+
+<div class="container">
+    <div class="login-box">
+     
+        <div class="titulo-con-logo">
+           <img src="{{ url_for('static', filename='logo.png') }}" 
+           alt="Logo" 
+           class="logo">
+
+           <h1 class="titulo">TEACHEASY</h1>
+        </div>
+        <h2>Inicio de Sesión</h2>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                <div class="alert">{{ message }}</div>
+            {% endfor %}
+        {% endwith %}
+   
+        <form action="/inicio" method="POST">
+            <div class="input-group">
+                <input type="text" name="correo" placeholder="Correo" required>
+            </div>
+
+            <div class="input-group password-wrapper">
+               <input type="password" id="contrasena" name="contrasena" placeholder="Contraseña" required>
+                <i class="fas fa-eye toggle-password" id="togglePassword"></i>
+            </div>
+
+           
+            <button type="submit" class="btn-login">
+                Inicio de Sesión
+            </button>
+            
+  
+            <a href="{{ url_for('recuperar') }}" class="forgot">¿Olvidó su contraseña?</a>
+
+        </form>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    function setupToggle(toggleId, inputId) {
+        const toggle = document.getElementById(toggleId);
+        const input = document.getElementById(inputId);
+        toggle.addEventListener('click', () => {
+            input.type = input.type === 'password' ? 'text' : 'password';
+            toggle.classList.toggle('fa-eye');
+            toggle.classList.toggle('fa-eye-slash');
+        });
+    }
+
+    setupToggle('togglePassword', 'contrasena');
+    
+});
+</script>
+
+
+<script>
+setTimeout(() => {
+    const alertas = document.querySelectorAll('.alert');
+    alertas.forEach(alerta => {
+        alerta.style.opacity = "0";
+        alerta.style.transition = "opacity 0.3s";
+        setTimeout(() => alerta.remove(), 500);
+    });
+}, 3000);
+</script>
+
+
+</body>
+</html>

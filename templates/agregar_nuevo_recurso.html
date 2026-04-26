@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Agregar Recurso - TEACHEASY</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='agregar_nuevo_recurso.css') }}">
+</head>
+
+<body>
+
+    <!-- ===== BARRA SUPERIOR ===== -->
+    <div class="barra-superior">
+        <div class="barra-contenido">
+            <span class="panel-texto">Agregar Nuevo Recurso</span>
+            <a href="{{ url_for('modulo_didactico') }}" class="volver">
+                ← Volver 
+            </a>
+        </div>
+    </div>
+
+    <!-- ===== IMAGEN DECORATIVA IZQUIERDA ===== -->
+     <img src="{{ url_for('static', filename='nina.png') }}" 
+     class="imagen-decorativa" 
+     alt="Imagen educativa">
+    
+
+    <!-- ===== CONTENEDOR CENTRAL ===== -->
+    <div class="contenedor-formulario">
+
+        <div class="card-formulario">
+
+            <h2>Agregar Nuevo Tema</h2>
+
+            {% if error %}
+                <p id="mensaje-error" class="mensaje-error">
+                    {{ error }}
+                </p>
+            {% endif %}
+
+            {% if mensaje_exito %}
+                <p id="mensaje-exito" class="mensaje-exito">
+                    {{ mensaje_exito }}
+                </p>
+            {% endif %}
+
+            <!-- ⚠️ IMPORTANTE -->
+            <form method="POST" enctype="multipart/form-data">
+
+                <div class="grupo-input">
+                    <label>Unidad</label>
+                    <select name="id_unidad" required>
+                        <option value="">Seleccione una unidad</option>
+                        <option value="1">Unidad 1</option>
+                        <option value="2">Unidad 2</option>
+                        <option value="3">Unidad 3</option>
+                    </select>
+                </div>
+
+                <div class="grupo-input">
+                    <label>Tipo de recurso</label>
+                    <select name="id_tipo" required>
+                        <option value="">Seleccione tipo</option>
+                        <option value="1">Video</option>
+                        <option value="2">PDF</option>
+                        <option value="3">Imagen</option>
+                        <option value="4">Juego</option>
+                    </select>
+                </div>
+
+                <div class="grupo-input">
+                    <label>Tema</label>
+                    <input type="text" name="titulo" required>
+                </div>
+
+                <div class="grupo-input">
+                    <label>Descripción del tema</label>
+                    <textarea name="descripcion" required></textarea>
+                </div>
+
+                <!-- 🔹 Tipo de entrada -->
+                <div class="grupo-input">
+                    <label>Tipo de entrada</label>
+                    <select id="tipoEntrada" onchange="cambiarEntrada()">
+                        <option value="url">URL</option>
+                        <option value="archivo">Subir archivo</option>
+                    </select>
+                </div>
+
+                <!-- 🔹 URL -->
+                <div class="grupo-input" id="input-url">
+                    <label>URL del recurso</label>
+                    <input type="text" name="url">
+                </div>
+
+                <!-- 🔹 ARCHIVO -->
+                <div class="grupo-input" id="input-archivo" style="display:none;">
+                    <label>Subir archivo</label>
+
+                    <div class="upload-box" onclick="document.getElementById('archivo').click()">
+                        <input type="file" id="archivo" name="archivo" accept=".jpg,.jpeg,.png,.pdf,.mp4" hidden>
+
+                        <div class="upload-content">
+                            <p class="icono">📁</p>
+                            <p>Haz clic o arrastra tu archivo aquí</p>
+                            <span>Formatos: JPG, PNG, PDF, MP4</span>
+                        </div>
+                    </div>
+
+                    <!-- 🔹 Nombre + botón eliminar -->
+                    <div class="file-info" id="file-info" style="display:none;">
+                        <span id="nombre-archivo"></span>
+                        <button type="button" class="btn-eliminar" onclick="eliminarArchivo()">✖</button>
+                    </div>
+                </div>
+
+                <div class="botones">
+                    <button type="submit" class="btn-guardar">
+                        ✓ Guardar
+                    </button>
+
+                    <a href="{{ url_for('modulo_didactico') }}" class="btn-cancelar">
+                        ✕ Cancelar
+                    </a>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- ===== MENSAJE AUTO OCULTAR ===== -->
+    <script>
+        setTimeout(function() {
+            var mensaje = document.getElementById("mensaje-exito");
+            if (mensaje) {
+                mensaje.style.transition = "opacity 0.5s";
+                mensaje.style.opacity = "0";
+                setTimeout(function(){
+                    mensaje.style.display = "none";
+                }, 500);
+            }
+        }, 5000);
+    </script>
+
+    <!-- ===== CAMBIAR ENTRE URL Y ARCHIVO ===== -->
+    <script>
+    function cambiarEntrada() {
+        var tipo = document.getElementById("tipoEntrada").value;
+
+        if (tipo === "url") {
+            document.getElementById("input-url").style.display = "block";
+            document.getElementById("input-archivo").style.display = "none";
+        } else {
+            document.getElementById("input-url").style.display = "none";
+            document.getElementById("input-archivo").style.display = "block";
+        }
+    }
+    </script>
+
+    <!-- ===== MOSTRAR NOMBRE DEL ARCHIVO ===== -->
+    <script>
+    const inputArchivo = document.getElementById("archivo");
+    const nombreArchivo = document.getElementById("nombre-archivo");
+    const fileInfo = document.getElementById("file-info");
+
+    inputArchivo.addEventListener("change", function() {
+        if (this.files.length > 0) {
+            nombreArchivo.textContent = "Archivo seleccionado: " + this.files[0].name;
+            fileInfo.style.display = "flex";
+        }
+    });
+
+    function eliminarArchivo() {
+        inputArchivo.value = "";
+        nombreArchivo.textContent = "";
+        fileInfo.style.display = "none";
+    }
+    </script>
+
+</body>
+</html>

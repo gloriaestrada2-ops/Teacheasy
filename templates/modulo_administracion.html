@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>TEACHEASY - Módulo de Administración</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='modulo_adm.css') }}">
+</head>
+
+<body class="body-panel">
+
+    <!-- Barra superior -->
+    <div class="barra-superior">
+        <div class="barra-contenido">
+            <span class="panel-texto">Módulo de Administración</span>
+            <a href="{{ url_for('administrador') }}" class="volver">
+                Volver al Panel Principal
+            </a>
+        </div>
+    </div>
+
+    <div class="panel-container">
+
+        <!-- Logo -->
+        <div class="logo-panel">
+            <img src="{{ url_for('static', filename='logo.png') }}" class="logo" alt="Logo">
+            <h1>TEACHEASY</h1>
+        </div>
+
+        <h2 class="titulo-panel">Panel de Administración</h2>
+
+        <!-- ============================= -->
+        <!-- GESTIÓN DE USUARIOS -->
+        <!-- ============================= -->
+        <div class="seccion">
+
+            <h3>Gestión de usuarios</h3>
+
+            <div class="tabla-header">
+                <div class="acciones-derecha">
+
+                    <!-- Buscador -->
+                    <input 
+                        type="text"
+                        id="buscadorUsuarios"
+                        placeholder="Buscar por nombre..."
+                        class="input-buscar"
+                        onkeyup="filtrarUsuarios()"
+                    >
+
+                    <!-- Botón agregar -->
+                    <a href="{{ url_for('agregar_usuario_admin') }}" class="btn-agregar">
+                        ➕ Agregar
+                    </a>
+
+                </div>
+            </div>
+
+            <div class="tabla-scroll">
+                <table class="tabla-usuarios">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Rol</th>
+                            <th>Correo</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for usuario in usuarios %}
+                        <tr>
+                            <td>{{ usuario.nombre }}</td>
+                            <td>{{ usuario.rol }}</td>
+                            <td>{{ usuario.correo }}</td>
+                            <td class="acciones">
+                                <a href="{{ url_for('editar_usuario', id_usuario=usuario.id_usuario) }}" class="btn-editar">Editar</a>
+                                <a href="#" class="btn-eliminar"onclick="abrirModal({{ usuario.id_usuario  }})">Eliminar</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+
+            <!-- ============================= -->
+               <!-- GESTIÓN DE GRUPOS -->
+            <!-- ============================= -->
+            <div class="seccion contenido">
+
+                <div class="contenido-izq">
+                   <h3>Gestión de grupos</h3>
+
+                   <div class="item-contenido">
+                       <span>Grupos y alumnos</span>
+                       <a href="{{ url_for('gestionar_grupos') }}" class="btn-gestionar">
+                        Gestionar
+                       </a>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ============================= -->
+        <!-- GESTIÓN DE CONTENIDO -->
+        <!-- ============================= -->
+        <div class="seccion contenido">
+
+            <div class="contenido-izq">
+                <h3>Gestión de contenido</h3>
+
+
+                <div class="item-contenido">
+                   <span>Video</span>
+                   <a href="{{ url_for('gestionar_contenido', id_tipo=1) }}" class="btn-gestionar">Gestionar</a>
+                </div>
+
+                <div class="item-contenido">
+                   <span>PDF</span>
+                   <a href="{{ url_for('gestionar_contenido', id_tipo=2) }}" class="btn-gestionar">Gestionar</a>
+                </div>
+
+                <div class="item-contenido">
+                  <span>Imagen</span>
+                  <a href="{{ url_for('gestionar_contenido', id_tipo=3) }}" class="btn-gestionar">Gestionar</a>
+                </div>
+
+                <div class="item-contenido">
+                   <span>Juego</span>
+                   <a href="{{ url_for('gestionar_contenido', id_tipo=4) }}" class="btn-gestionar">Gestionar</a>
+                </div>
+            </div>
+               
+
+            <!-- RESPALDO -->
+            <div class="contenido-der">
+                <h3>Respaldo del sistema</h3>
+                <a href="{{ url_for('generar_backup_excel') }}" class="btn-backup">Generar copia de seguridad</a>
+                
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ================= MODAL ELIMINAR ================= -->
+
+<div id="modalEliminar" class="modal-overlay">
+    <div class="modal-box">
+
+        <div class="modal-icono">
+            ⚠
+        </div>
+
+        <h3>¿Desea eliminar este usuario?</h3>
+
+        <div class="modal-botones">
+            <button class="btn-cancelar" onclick="cerrarModal()">
+                Cancelar
+            </button>
+
+            <a id="btnConfirmarEliminar" href="#" class="btn-confirmar">
+                Sí, eliminar
+            </a>
+        </div>
+
+    </div>
+</div>
+
+    <!-- ============================= -->
+    <!-- SCRIPT BUSCADOR -->
+    <!-- ============================= -->
+    <script>
+        function filtrarUsuarios() {
+            let input = document.getElementById("buscadorUsuarios");
+            let filtro = input.value.toLowerCase();
+            let tabla = document.querySelector(".tabla-usuarios tbody");
+            let filas = tabla.getElementsByTagName("tr");
+
+            for (let i = 0; i < filas.length; i++) {
+                let celdaNombre = filas[i].getElementsByTagName("td")[0];
+
+                if (celdaNombre) {
+                    let texto = celdaNombre.textContent || celdaNombre.innerText;
+
+                    if (texto.toLowerCase().indexOf(filtro) > -1) {
+                        filas[i].style.display = "";
+                    } else {
+                        filas[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+
+<script>
+function abrirModal(idUsuario) {
+    const modal = document.getElementById("modalEliminar");
+    const btnConfirmar = document.getElementById("btnConfirmarEliminar");
+
+    // Cambiar link dinámicamente
+    btnConfirmar.href = "/eliminar_usuario/" + idUsuario;
+
+    modal.style.display = "flex";
+}
+
+function cerrarModal() {
+    document.getElementById("modalEliminar").style.display = "none";
+}
+</script>
+
+</body>
+</html>

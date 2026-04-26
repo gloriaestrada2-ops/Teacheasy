@@ -1,0 +1,290 @@
+body{
+font-family:'Inter',sans-serif;
+background:#f4f6f9;
+margin:0;
+color:#2c3e50;
+}
+
+/* HEADER */
+.header{
+background:#2cab2c;
+color:white;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 30px;
+}
+
+.header-left{
+display:flex;
+align-items:center;
+gap:15px;
+}
+
+.header img{
+width:55px;
+}
+
+.header h2{
+margin:0;
+}
+
+.header span{
+font-size:12px;
+opacity:0.8;
+}
+
+.header{
+    background:#2cab2c;
+    color:white;
+
+    display:flex;
+    justify-content:space-between; /* 🔥 separa izquierda y derecha */
+    align-items:center;
+
+    padding:8px 25px; /* más delgada */
+}
+
+/* CONTENEDOR DEL LOGO */
+.header-left{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.header-left img{
+    width:55px;
+}
+
+.header-left h2{
+    margin:0;
+    font-size:20px;
+    font-weight:600;
+}
+.btn-volver{
+    color:white;
+    text-decoration:none;
+
+    font-size:18px;   /* 🔥 más grande */
+    font-weight:700;  /* 🔥 más grueso */
+
+    padding:8px 16px;
+    border-radius:8px;
+
+    transition:0.2s;
+}
+
+.btn-volver:hover{
+    background:rgba(255,255,255,0.2);
+}
+/* TITULO */
+.titulo{
+text-align:center;
+margin:30px 0;
+font-weight:600;
+}
+
+/* CARDS */
+.info-box{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+width:85%;
+margin:auto;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:12px;
+box-shadow:0 4px 15px rgba(0,0,0,0.08);
+display:flex;
+flex-direction:column;
+}
+
+.card span{
+font-size:12px;
+color:#888;
+}
+
+.card strong{
+font-size:20px;
+margin-top:5px;
+}
+
+/* TABLA */
+.tabla-card{
+width:85%;
+margin:30px auto;
+background:white;
+padding:20px;
+border-radius:12px;
+box-shadow:0 4px 15px rgba(0,0,0,0.08);
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th{
+background:#2cab2c;
+color:white;
+padding:12px;
+font-weight:500;
+}
+
+td{
+padding:10px;
+text-align:center;
+border-bottom:1px solid #eee;
+}
+
+tr:hover{
+background:#f9fbfd;
+}
+
+/* INPUTS */
+input{
+padding:6px;
+border-radius:6px;
+border:1px solid #ccc;
+text-align:center;
+}
+
+.nombreAlumno{
+background:#f5f7fa;
+border:none;
+}
+
+/* BOTONES */
+.acciones{
+text-align:center;
+margin-top:20px;
+}
+
+.btn{
+background:#2cab2c;
+color:white;
+padding:10px 25px;
+border:none;
+border-radius:8px;
+margin:5px;
+cursor:pointer;
+}
+
+.btn:hover{
+background:#239523;
+}
+
+/* RESUMEN */
+.resumen{
+width:500px;
+margin:30px auto;
+background:white;
+padding:20px;
+border-radius:12px;
+text-align:center;
+box-shadow:0 4px 15px rgba(0,0,0,0.08);
+}
+
+/* GRAFICAS */
+.graficas{
+display:flex;
+justify-content:center;
+gap:40px;
+flex-wrap:wrap;
+margin:40px;
+}
+
+.grafica{
+background:white;
+padding:20px;
+border-radius:12px;
+width:400px;
+text-align:center;
+box-shadow:0 4px 15px rgba(0,0,0,0.08);
+}
+
+canvas{
+width:100% !important;
+height:280px !important;
+}
+
+/* PDF */
+.btn-pdf{
+background:#2cab2c;
+color:white;
+padding:12px 30px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+}
+
+body{
+-webkit-print-color-adjust:exact;
+}
+
+.grafica, .tabla-card, .card{
+page-break-inside:avoid;
+}
+
+/* COLORES CALIFICACIÓN */
+.rojo{
+background:#ffe5e5;
+color:#c0392b;
+font-weight:bold;
+}
+
+.amarillo{
+background:#fff6d5;
+color:#b7950b;
+font-weight:bold;
+}
+
+.verde{
+background:#eafaf1;
+color:#1e8449;
+font-weight:bold;
+}
+
+/* RANKING */
+.ranking{
+font-weight:bold;
+font-size:16px;
+}
+
+/* LOGO FUERA DE LA BARRA */
+.logo-section{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+
+    margin-top:20px;
+}
+
+.logo-section img{
+    width:70px;
+}
+
+.logo-section h2{
+    margin:0;
+    font-size:24px;
+    font-weight:600;
+}
+
+/* BLOQUEO VISUAL */
+.bloqueado{
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+/* MENSAJE FINALIZADO */
+.estado-finalizado{
+    text-align:center;
+    font-weight:bold;
+    color:#27ae60;
+    margin-top:15px;
+    font-size:18px;
+}

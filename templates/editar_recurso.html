@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Recurso - TEACHEASY</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='editar_recurso.css') }}">
+</head>
+
+<body>
+
+    <!-- Barra superior -->
+    <div class="barra-superior">
+        <div class="barra-contenido">
+            <span class="panel-texto">Editar Recurso</span>
+
+            <a href="{{ url_for('gestionar_contenido', id_tipo=id_tipo) }}" class="volver">
+                ← Volver
+            </a>
+        </div>
+    </div>
+
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+<div id="mensaje-exito" class="mensaje-exito">
+{{ message }}
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+
+<div class="contenedor-principal">
+
+
+    <!-- FORMULARIO IZQUIERDA -->
+    <div class="card-formulario">
+
+        <h2>Modificar datos del recurso</h2>
+
+        <form method="POST" action="{{ url_for('actualizar_recurso') }}">
+
+            <input type="hidden" name="id_recurso"
+                   value="{{ recurso.id_recurso }}">
+
+            <div class="grupo-input">
+                <label>Título</label>
+                <input type="text" name="titulo"
+                       value="{{ recurso.titulo }}" required>
+            </div>
+
+            <div class="grupo-input">
+                <label>Unidad</label>
+
+                <select name="id_unidad" required>
+
+                    <option value="1" {% if recurso.id_unidad == 1 %}selected{% endif %}>
+                        Unidad 1
+                    </option>
+
+                    <option value="2" {% if recurso.id_unidad == 2 %}selected{% endif %}>
+                        Unidad 2
+                    </option>
+
+                    <option value="3" {% if recurso.id_unidad == 3 %}selected{% endif %}>
+                        Unidad 3
+                    </option>
+
+                </select>
+            </div>
+
+            <div class="grupo-input">
+                <label>Tipo</label>
+
+                <select name="id_tipo" required>
+
+                    <option value="1" {% if recurso.id_tipo == 1 %}selected{% endif %}>
+                        Video
+                    </option>
+
+                    <option value="2" {% if recurso.id_tipo == 2 %}selected{% endif %}>
+                        PDF
+                    </option>
+
+                    <option value="3" {% if recurso.id_tipo == 3 %}selected{% endif %}>
+                        Imagen
+                    </option>
+
+                    <option value="4" {% if recurso.id_tipo == 4 %}selected{% endif %}>
+                        Juego
+                    </option>
+
+                </select>
+            </div>
+
+            <div class="grupo-input">
+                <label>Descripción</label>
+
+                <textarea name="descripcion" required>{{ recurso.descripcion }}</textarea>
+            </div>
+
+            <div class="grupo-input">
+                <label>URL</label>
+
+                <input type="text" name="url"
+                       value="{{ recurso.url }}" required>
+            </div>
+
+
+            <div class="botones">
+
+                <button type="submit" class="btn-guardar">
+                    ✓ Guardar cambios
+                </button>
+
+                <a href="{{ url_for('gestionar_contenido', id_tipo=id_tipo) }}"
+                   class="btn-cancelar">
+                    ✕ Cancelar
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+<!-- VISTA PREVIA -->
+<div class="card-preview">
+
+    <h2>Vista previa</h2>
+
+    <div class="vista-previa">
+
+        {% if recurso.url %}
+
+            <!-- ===== YOUTUBE ===== -->
+            {% if 'youtube.com' in recurso.url or 'youtu.be' in recurso.url %}
+
+                {% if 'watch?v=' in recurso.url %}
+                    {% set video_id = recurso.url.split('watch?v=')[1].split('&')[0] %}
+                {% elif 'youtu.be/' in recurso.url %}
+                    {% set video_id = recurso.url.split('youtu.be/')[1].split('?')[0] %}
+                {% elif '/shorts/' in recurso.url %}
+                    {% set video_id = recurso.url.split('/shorts/')[1].split('?')[0] %}
+                {% endif %}
+
+                <a href="{{ recurso.url }}" target="_blank">
+                    <img 
+                        src="https://img.youtube.com/vi/{{ video_id }}/hqdefault.jpg"
+                        class="preview-img"
+                    >
+                </a>
+
+            <!-- ===== GOOGLE DRIVE ===== -->
+            {% elif 'drive.google.com' in recurso.url %}
+
+                {% if '/file/d/' in recurso.url %}
+                    {% set file_id = recurso.url.split('/file/d/')[1].split('/')[0] %}
+
+                    <iframe 
+                        src="https://drive.google.com/file/d/{{ file_id }}/preview"
+                        class="preview-frame"
+                        allow="autoplay">
+                    </iframe>
+
+                {% else %}
+                    <p>No se puede previsualizar este archivo</p>
+                {% endif %}
+
+            <!-- ===== IMÁGENES ===== -->
+            {% elif recurso.url.endswith('.jpg') 
+                or recurso.url.endswith('.png') 
+                or recurso.url.endswith('.jpeg') 
+                or recurso.url.endswith('.gif') %}
+
+                <img 
+                    src="{{ recurso.url }}" 
+                    class="preview-img"
+                >
+
+            <!-- ===== PDF ===== -->
+            {% elif recurso.url.endswith('.pdf') %}
+
+                <iframe 
+                    src="https://docs.google.com/gview?url={{ recurso.url }}&embedded=true"
+                    class="preview-frame">
+                </iframe>
+
+            <!-- ===== OTROS ===== -->
+            {% else %}
+
+                <iframe 
+                    src="{{ recurso.url }}"
+                    class="preview-frame">
+                </iframe>
+
+            {% endif %}
+
+        {% else %}
+            <p>Sin recurso disponible</p>
+        {% endif %}
+
+    </div>
+
+</div>
+<script>
+setTimeout(function(){
+
+    var mensaje = document.getElementById("mensaje-exito");
+
+    if(mensaje){
+
+        mensaje.style.transition = "opacity 0.5s";
+        mensaje.style.opacity = "0";
+
+        setTimeout(function(){
+            mensaje.style.display="none";
+        },500);
+    }
+
+},5000);
+
+</script>
+
+
+</body>
+</html>

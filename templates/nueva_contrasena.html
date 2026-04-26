@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Nueva contraseña - TEACHEASY</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='nueva_contrasena.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+<!-- Barra superior verde -->
+<div class="barra-superior">
+    <div class="barra-contenido">
+        <span></span>
+    </div>
+</div>
+
+<!-- Imágenes decorativas -->
+<img src="{{ url_for('static', filename='fondo.png') }}" 
+     class="imagen-superior" 
+     alt="Decoración">
+
+<img src="{{ url_for('static', filename='fondo1.png') }}" 
+     class="imagen-derecha-abajo" 
+     alt="Decoración">
+
+<div class="container">
+    <div class="recuperar-box">
+
+        <!-- Logo y nombre -->
+        <div class="titulo-con-logo">
+            <img src="{{ url_for('static', filename='logo.png') }}" 
+                 class="logo" 
+                 alt="Logo">
+            <h1 class="titulo">TEACHEASY</h1>
+        </div>
+
+        <h2 class="subtitulo">Crear una nueva contraseña</h2>
+
+        <p class="descripcion">
+            Ingrese su nueva contraseña y confírmela para continuar.
+        </p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="mensaje {{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST">
+            <div class="input-container">
+                <input type="password" 
+                       name="contrasena" 
+                       placeholder="Nueva Contraseña" 
+                       id="contrasena"
+                       required>
+                <i class="fas fa-eye toggle-password" id="togglePassword"></i>
+            </div>
+
+            <div class="input-container">
+                <input type="password" 
+                       name="confirmar" 
+                       placeholder="Confirmar Contraseña" 
+                       id="confirmar_contrasena"
+                       required>
+                <i class="fas fa-eye toggle-password" id="toggleConfirmPassword"></i>
+            </div>
+
+            <button type="submit" class="btn-enviar">
+                Actualizar contraseña
+            </button>
+        </form>
+
+    </div>
+</div>
+
+<!-- Mensajes desaparecen solos -->
+<script>
+setTimeout(() => {
+    const mensajes = document.querySelectorAll('.mensaje');
+    mensajes.forEach(mensaje => {
+        mensaje.style.opacity = "0";
+        mensaje.style.transition = "opacity 0.5s";
+        setTimeout(() => mensaje.remove(), 500);
+    });
+}, 3000);
+</script>
+
+<!-- Mostrar/Ocultar contraseñas -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const togglePassword = document.getElementById("togglePassword");
+    const contrasena = document.getElementById("contrasena");
+
+    const toggleConfirmPassword = document.getElementById("toggleConfirmPassword");
+    const confirmar_contrasena = document.getElementById("confirmar_contrasena");
+
+    togglePassword.addEventListener('click', () => {
+        const type = contrasena.type === "password" ? "text" : "password";
+        contrasena.type = type;
+        togglePassword.classList.toggle("fa-eye");
+        togglePassword.classList.toggle("fa-eye-slash");
+    });
+
+    toggleConfirmPassword.addEventListener('click', () => {
+        const type = confirmar_contrasena.type === "password" ? "text" : "password";
+        confirmar_contrasena.type = type;
+        toggleConfirmPassword.classList.toggle("fa-eye");
+        toggleConfirmPassword.classList.toggle("fa-eye-slash");
+    });
+});
+</script>
+
+</body>
+</html>

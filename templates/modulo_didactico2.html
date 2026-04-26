@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>TEACHEASY - Módulo Didáctico</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='modulo_didac.css') }}">
+</head>
+
+<body class="body-panel">
+
+    <!-- Barra superior -->
+    <div class="barra-superior">
+        <div class="barra-contenido">
+            <span class="panel-texto">Módulo Didáctico</span>
+            <a href="{{ url_for(panel) }}" class="volver">
+                Volver al Panel Principal
+            </a>
+        </div>
+    </div>
+
+    <div class="panel-container">
+
+        <!-- Logo -->
+        <div class="logo-panel">
+            <img src="{{ url_for('static', filename='logo.png') }}" class="logo" alt="Logo">
+            <h1>TEACHEASY</h1>
+        </div>
+
+        <h2 class="titulo-panel">Gestión de Materiales</h2>
+
+        <!-- Buscador -->
+        <div class="acciones">
+            <input 
+                type="text"
+                placeholder="Buscar tema..."
+                class="buscador"
+                id="buscadorTemas"
+                onkeyup="filtrarTemas()"
+            >
+        </div>
+
+        <!-- ===== UNIDADES DINÁMICAS ===== -->
+        {% for unidad in datos %}
+
+        <div class="unidad">
+            <div class="info-unidad">
+                <h3>Unidad {{ unidad.id_unidad }} - {{ unidad.nombre_unidad }}</h3>
+                <p><strong>Objetivo:</strong> {{ unidad.objetivo }}</p>
+            </div>
+
+            <div class="temas-grid">
+
+                {% for recurso in unidad.recursos %}
+                <div class="card-tema">
+
+                    <h4>{{ recurso.titulo }}</h4>
+                    <p>{{ recurso.descripcion }}</p>
+
+                    <!-- Vista previa -->
+                    <div class="vista-previa">
+
+                        {% if recurso.url %}
+
+                            {% if 'youtube.com' in recurso.url or 'youtu.be' in recurso.url %}
+
+                                {% if 'watch?v=' in recurso.url %}
+                                    {% set video_id = recurso.url.split('watch?v=')[1].split('&')[0] %}
+                                {% elif 'youtu.be/' in recurso.url %}
+                                    {% set video_id = recurso.url.split('youtu.be/')[1].split('?')[0] %}
+                                {% elif '/shorts/' in recurso.url %}
+                                    {% set video_id = recurso.url.split('/shorts/')[1].split('?')[0] %}
+                                {% endif %}
+
+                                <a href="{{ recurso.url }}" target="_blank">
+                                    <img 
+                                        src="https://img.youtube.com/vi/{{ video_id }}/hqdefault.jpg"
+                                        style="width:100%; height:180px; object-fit:cover;"
+                                    >
+                                </a>
+
+                            {% elif 'drive.google.com' in recurso.url %}
+
+                                {% if '/file/d/' in recurso.url %}
+                                    {% set file_id = recurso.url.split('/file/d/')[1].split('/')[0] %}
+                                    
+                                    <iframe 
+                                        src="https://drive.google.com/file/d/{{ file_id }}/preview"
+                                        width="100%" 
+                                        height="180px"
+                                        allow="autoplay">
+                                    </iframe>
+
+                                {% else %}
+                                    <p>No se puede previsualizar este archivo</p>
+                                {% endif %}
+
+                            {% elif recurso.url.endswith('.jpg') 
+                                or recurso.url.endswith('.png') 
+                                or recurso.url.endswith('.jpeg') 
+                                or recurso.url.endswith('.gif') %}
+
+                                <img 
+                                    src="{{ recurso.url }}" 
+                                    style="width:100%; height:180px; object-fit:cover;"
+                                >
+
+                            {% elif recurso.url.endswith('.pdf') %}
+
+                                <iframe 
+                                    src="https://docs.google.com/gview?url={{ recurso.url }}&embedded=true"
+                                    width="100%" 
+                                    height="180px">
+                                </iframe>
+
+                            {% else %}
+
+                                <iframe 
+                                    src="{{ recurso.url }}" 
+                                    width="100%" 
+                                    height="180px">
+                                </iframe>
+
+                            {% endif %}
+
+                        {% else %}
+                            <p>Sin recurso disponible</p>
+                        {% endif %}
+
+                    </div>
+
+                    <!-- CONTADOR -->
+                    <div class="contador-util">
+                        👍 Útil: {{ recurso.votos_utiles or 0 }}
+                    </div>
+
+                    <!-- BOTÓN TOGGLE VOTO -->
+                    <form action="{{ url_for('votar_recurso_route', id_recurso=recurso.id_recurso) }}" method="POST">
+                        
+                        {% if recurso.ya_voto %}
+                            <button type="submit" class="btn-util" style="background-color:#e74c3c;">
+                                ❌ Quitar voto
+                            </button>
+                        {% else %}
+                            <button type="submit" class="btn-util">
+                                👍 Marcar como útil
+                            </button>
+                        {% endif %}
+
+                    </form>
+
+                    <!-- Botón ver recurso -->
+                    <div class="vista-enlace">
+                        <a href="{{ recurso.url }}" target="_blank">
+                            Ver recurso
+                        </a>
+                    </div>
+
+                </div>
+                {% endfor %}
+
+            </div>
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    <!-- SCRIPT BUSCADOR -->
+    <script>
+    function filtrarTemas() {
+
+        let input = document.getElementById("buscadorTemas");
+        let filtro = input.value.toLowerCase();
+
+        let tarjetas = document.getElementsByClassName("card-tema");
+
+        for (let i = 0; i < tarjetas.length; i++) {
+
+            let titulo = tarjetas[i].getElementsByTagName("h4")[0];
+
+            if (titulo) {
+                let texto = titulo.textContent || titulo.innerText;
+
+                if (texto.toLowerCase().indexOf(filtro) > -1) {
+                    tarjetas[i].style.display = "";
+                } else {
+                    tarjetas[i].style.display = "none";
+                }
+            }
+        }
+    }
+    </script>
+
+</body>
+</html>

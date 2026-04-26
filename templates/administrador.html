@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>TEACHEASY - Panel Administrador</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='administrador.css') }}">
+</head>
+
+
+    <img src="{{ url_for('static', filename='abc.png') }}" 
+     class="imagen-esquina" 
+     alt="Decoración">
+
+    <img src="{{ url_for('static', filename='fondo1.png') }}" 
+     class="imagen-derecha-abajo" 
+     alt="Decoración">
+     
+<body class="body-panel">
+
+    <!-- Barra superior -->
+    <div class="barra-superior">
+        <div class="barra-contenido">
+            <span class="panel-texto">Panel Principal (Administrador)</span>
+            <a href="{{ url_for('logout') }}" class="cerrar">Cerrar Sesión</a>
+        </div>
+    </div>
+
+    <!-- Contenedor principal -->
+    <div class="panel-container">
+
+        <!-- Logo -->
+        <div class="logo-panel">
+            <img src="{{ url_for('static', filename='logo.png') }}" class="logo">
+            <h1>TEACHEASY</h1>
+        </div>
+
+        <h2 class="titulo-panel">Panel Principal</h2>
+
+        <!-- Tarjetas -->
+        <div class="cards">
+
+            
+            <a href="{{ url_for('modulo_didactico') }}" class="card">
+                <img src="{{ url_for('static', filename='didactico.png') }}">
+                <h3>Módulo Didáctico</h3>
+            </a>
+
+            
+            <a href="{{ url_for('evaluaciones') }}" class="card">
+                <img src="{{ url_for('static', filename='evaluaciones.png') }}">
+                <h3>Módulo de Evaluaciones</h3>
+            </a>
+
+            <a href="{{ url_for('modulo_administracion') }}" class="card card-centro">
+                <img src="{{ url_for('static', filename='admin.png') }}">
+                <h3>Módulo de Administración</h3>
+            </a>
+            
+    
+
+        </div>
+
+    </div>
+
+</body>
+</html>

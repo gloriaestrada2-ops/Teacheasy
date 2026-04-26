@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>TEACHEASY - Evaluaciones</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='evaluaciones.css') }}">
+</head>
+
+<body class="body-evaluaciones">
+
+<!-- Barra superior -->
+<div class="barra-superior">
+    <span>Módulo de Evaluaciones</span>
+    <a href="{{ url_for(panel) }}" class="volver">Volver al Panel Principal</a>
+</div>
+
+<!-- Logo -->
+<div class="logo-superior">
+    <img src="{{ url_for('static', filename='logo.png') }}">
+    <h1>TEACHEASY</h1>
+</div>
+
+<!-- Decoraciones -->
+<img src="{{ url_for('static', filename='ico.png') }}" class="imagen-izquierda">
+<img src="{{ url_for('static', filename='fondo1.png') }}" class="imagen-derecha">
+
+<!-- Contenedor -->
+<div class="contenedor-evaluaciones">
+
+<h2>Evaluaciones de Inglés<br>6to Grado</h2>
+
+<img src="{{ url_for('static', filename='evalua.png') }}" class="icono-evaluacion">
+
+<a href="{{ url_for('crear_evaluacion') }}">
+<button class="btn-crear">➕ Crear nueva evaluación</button>
+</a>
+
+<table class="tabla-evaluaciones">
+
+<thead>
+<tr>
+<th>Nombre</th>
+<th>Fecha</th>
+<th>Estado</th>
+<th>Resultados</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for e in evaluaciones %}
+
+<tr onclick="seleccionarExamen({{ e[0] }}, '/{{ e[3] }}')" id="fila{{ e[0] }}">
+
+<td>{{ e[2] }}</td>
+
+<td>{{ e[4].strftime('%d/%m/%Y') }}</td>
+
+<!-- ESTADO -->
+<td>
+  {{ e[5] }}
+</td>
+
+<!-- RESULTADOS -->
+<td id="resultado{{ e[0] }}">
+
+  {% if e[5] == "FINALIZADO" %}
+    <a href="{{ url_for('resultados', id_evaluacion=e[0]) }}" class="btn-resultados">
+      📊 Ver resultados
+    </a>
+  {% else %}
+    <a href="{{ url_for('resultados', id_evaluacion=e[0]) }}" class="btn-resultados">
+      📊 Agregar resultado
+    </a>
+  {% endif %}
+
+</td>
+
+
+
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+<button class="btn-imprimir" onclick="imprimirExamen()">
+🖨 Imprimir examen seleccionado
+</button>
+
+</div>
+
+<!-- SCRIPT SELECCIONAR EXAMEN -->
+
+<script>
+
+let pdfSeleccionado = null
+
+function seleccionarExamen(id, ruta){
+
+    pdfSeleccionado = ruta
+
+    document.querySelectorAll("tr").forEach(f=>{
+        f.style.background=""
+    })
+
+    document.getElementById("fila"+id).style.background="#dfefff"
+
+}
+
+function imprimirExamen(){
+
+    if(pdfSeleccionado==null){
+        alert("Selecciona un examen primero")
+        return
+    }
+
+    let ventana = window.open(pdfSeleccionado)
+
+    ventana.onload = function(){
+        ventana.print()
+    }
+
+}
+
+</script>
+
+</body>
+</html>

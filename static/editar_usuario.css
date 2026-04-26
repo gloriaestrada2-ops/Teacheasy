@@ -1,0 +1,153 @@
+/* ====== FONDO GENERAL ====== */
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
+}
+
+/* ====== BARRA SUPERIOR ====== */
+
+.barra-superior {
+    background-color: #2e8b1e;
+    padding: 15px 30px;
+    color: white;
+}
+
+.barra-contenido {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.panel-texto {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.volver {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.volver:hover {
+    text-decoration: underline;
+}
+
+/* ====== CONTENEDOR CENTRAL ====== */
+
+.contenedor-formulario {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 85vh;
+}
+
+/* ====== CARD ====== */
+
+.card-formulario {
+    background: white;
+    width: 500px;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.card-formulario h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color:#2e8b1e;
+}
+
+/* ====== INPUTS ====== */
+
+.grupo-input {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.grupo-input label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.grupo-input input,
+.grupo-input select {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.grupo-input input:focus,
+.grupo-input select:focus {
+    border-color: #2e8b1e;;
+    outline: none;
+    box-shadow: 0 0 5px #2e8b1e(46, 125, 50, 0.3);
+}
+
+/* ====== BOTONES ====== */
+
+.botones {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.btn-guardar {
+    background-color: #2e8b1e;;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-guardar:hover {
+    background-color: #2e8b1e;;
+}
+
+.btn-cancelar {
+    background-color: #c62828;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-cancelar:hover {
+    background-color: #8e0000;
+}
+
+.mensaje-exito {
+    position: fixed;
+    top: 80px;
+    right: 30px;
+    background: #ffffff;
+    color: #2e8b1e;
+    padding: 16px 22px;
+    border-radius: 10px;
+    font-weight: 600;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    border-left: 5px solid #2e8b1e;
+    animation: slideIn 0.4s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}

@@ -1,0 +1,162 @@
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    background:#f3f3f3;
+    margin:0;
+}
+
+
+/* Barra superior */
+
+.barra-superior{
+    background:#2fa12f;
+    color:white;
+    padding:10px 25px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-weight:bold;
+}
+
+.volver{
+    color:white;
+    text-decoration:none;
+}
+
+
+/* Logo arriba izquierda */
+
+.logo-superior{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-left:30px;
+    margin-top:20px;
+}
+
+.logo-superior img{
+    width:80px;
+}
+
+.logo-superior h1{
+    font-size:28px;
+    margin:0;
+}
+
+
+/* Contenedor evaluaciones */
+
+.contenedor-evaluaciones{
+    width:800px;
+    margin:20px auto;
+    background:white;
+    padding:35px;
+    border-radius:12px;
+    text-align:center;
+    box-shadow:0px 5px 15px rgba(0,0,0,0.2);
+}
+
+h2{
+    margin-top:10px;
+    font-weight:normal;
+}
+
+
+/* Icono */
+
+.icono-evaluacion{
+    width:85px;
+    position:absolute;
+    right:34%;
+    margin-top:-80px;
+}
+
+
+/* Botones */
+
+.btn-crear{
+    margin:20px 0;
+    background:#2fa12f;
+    color:white;
+    border:none;
+    padding:12px 25px;
+    border-radius:20px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.btn-crear:hover{
+    background:#238823;
+}
+
+.btn-imprimir{
+    margin-top:25px;
+    background:#2fa12f;
+    color:white;
+    border:none;
+    padding:12px 30px;
+    border-radius:20px;
+    cursor:pointer;
+}
+
+.btn-imprimir:hover{
+    background:#238823;
+}
+
+
+/* Tabla */
+
+.tabla-evaluaciones{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.tabla-evaluaciones th{
+    background:#2fa12f;
+    color:white;
+    padding:10px;
+}
+
+.tabla-evaluaciones td{
+    padding:10px;
+    border:1px solid #cfcfcf;
+}
+
+.icono-tabla{
+    width:25px;
+}
+
+
+/* Estados */
+
+.activa{
+    color:#1b7f1b;
+    font-weight:bold;
+}
+
+.finalizada{
+    color:#777;
+}
+
+
+
+/* Decoraciones */
+
+.imagen-izquierda{
+    position:fixed;
+    left:0;
+    bottom:0;
+    width:200px;
+}
+
+.imagen-derecha{
+    position:fixed;
+    right:0;
+    bottom:0;
+    width:230px;
+}
+
+.tabla-evaluaciones tbody tr:hover{
+background:#f2f6ff;
+cursor:pointer;
+}
+

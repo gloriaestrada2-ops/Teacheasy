@@ -1,0 +1,270 @@
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    background:#f3f3f3;
+    margin:0;
+}
+
+
+/* Barra superior */
+
+.barra-superior{
+    background:#2fa12f;
+    color:white;
+    padding:10px 25px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-weight:bold;
+}
+
+.volver{
+    color:white;
+    text-decoration:none;
+}
+
+
+/* Logo arriba izquierda */
+
+.logo-superior{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-left:30px;
+    margin-top:20px;
+}
+
+.logo-superior img{
+    width:80px;
+}
+
+.logo-superior h1{
+    font-size:28px;
+    margin:0;
+}
+
+
+/* Contenedor evaluaciones */
+
+.contenedor-evaluaciones{
+    width:800px;
+    margin:20px auto;
+    background:white;
+    padding:35px;
+    border-radius:12px;
+    text-align:center;
+    box-shadow:0px 5px 15px rgba(0,0,0,0.2);
+}
+
+h2{
+    margin-top:10px;
+    font-weight:normal;
+}
+
+
+/* Icono */
+
+.icono-evaluacion{
+    width:85px;
+    position:absolute;
+    right:34%;
+    margin-top:-80px;
+}
+
+
+/* Botones */
+
+.btn-crear{
+    margin:20px 0;
+    background:#2fa12f;
+    color:white;
+    border:none;
+    padding:12px 25px;
+    border-radius:20px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.btn-crear:hover{
+    background:#238823;
+}
+
+.btn-imprimir{
+    margin-top:25px;
+    background:#2fa12f;
+    color:white;
+    border:none;
+    padding:12px 30px;
+    border-radius:20px;
+    cursor:pointer;
+}
+
+.btn-imprimir:hover{
+    background:#238823;
+}
+
+
+/* Tabla */
+
+.tabla-evaluaciones{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.tabla-evaluaciones th{
+    background:#2fa12f;
+    color:white;
+    padding:10px;
+}
+
+.tabla-evaluaciones td{
+    padding:10px;
+    border:1px solid #cfcfcf;
+}
+
+.icono-tabla{
+    width:25px;
+}
+
+
+/* Estados */
+
+.activa{
+    color:#1b7f1b;
+    font-weight:bold;
+}
+
+.finalizada{
+    color:#777;
+}
+
+
+
+/* Decoraciones */
+
+.imagen-izquierda{
+    position:fixed;
+    left:0;
+    bottom:0;
+    width:200px;
+}
+
+.imagen-derecha{
+    position:fixed;
+    right:0;
+    bottom:0;
+    width:230px;
+}
+
+.tabla-evaluaciones tbody tr:hover{
+background:#f2f6ff;
+cursor:pointer;
+}
+.filtros {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+
+    flex-wrap: nowrap;  /* 🔥 CLAVE: evita que se bajen */
+
+    padding: 15px 20px;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+
+.filtro-grupo label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    min-width: 100px; /* 🔥 alinea ambos */
+    font-weight: 500;
+}
+.filtro-grupo select {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    min-width: 160px;
+    transition: 0.3s;
+}
+
+.filtro-grupo select:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 5px rgba(52,152,219,0.3);
+}
+
+/* GRUPO */
+
+.filtro-grupo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
+}
+
+/* SELECT BONITO */
+.filtro-grupo select {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    min-width: 180px;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.filtro-grupo select:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 5px rgba(52,152,219,0.3);
+}
+
+/* BOTONES */
+
+
+.acciones-filtro {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap; /* 🔥 evita que botones se bajen */
+}
+
+/* BOTÓN FILTRAR */
+.btn-filtrar {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-weight: 500;
+}
+
+.btn-filtrar:hover {
+    transform: scale(1.05);
+}
+
+/* BOTÓN LIMPIAR */
+.btn-limpiar {
+    background: #ecf0f1;
+    color: #333;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-limpiar:hover {
+    background: #dcdde1;
+}
+.deshabilitado {
+    
+    color: #666;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: not-allowed;
+    display: inline-block;
+}

@@ -1,0 +1,221 @@
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f4f6f9;
+    overflow-x: hidden;
+}
+
+
+.barra-superior {
+    width: 100%;
+    height: 40px;
+    background-color: #3cab2f;
+    display: flex;           /* convierte la barra en flex */
+    align-items: center;     /* centra verticalmente */
+    justify-content: flex-end; /* mueve el contenido a la derecha */
+    padding: 0 20px;         /* margen interno */
+    box-sizing: border-box;   /* para que el padding no rompa el ancho */
+     position: relative;   /* necesario para que z-index funcione */
+    z-index: 10;   
+}
+ 
+
+
+.imagen-superior {
+    position: fixed;        /* siempre fija en la ventana */
+    top: 40px;              /* justo debajo de la barra de 40px */
+    left: 0;
+    width: 400px;           /* ajusta a tu gusto */
+    height: auto;           /* mantiene proporción */
+    z-index: 1;             /* detrás del formulario pero encima del fondo */
+}
+.imagen-derecha-abajo {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 400px;
+    height: auto;
+    z-index: 0;
+}
+
+/* Contenedor principal */
+
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;   /* que empiece debajo de la barra */
+    min-height: calc(100vh - 100px);
+    padding-top: 20px;         /* separación de la barra verde */
+    margin-top: 0;   
+}
+
+
+/* Caja de registro */
+
+.registro-box {
+    background-color: white;
+    width: 420px;
+    padding: 5px 40px 40px 40px; /* top, right, bottom, left */
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    text-align: center;
+    position: relative;
+    z-index: 5;
+}
+
+
+/* Logo y título */
+.titulo-con-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.logo {
+    width: 80px;
+}
+
+.titulo {
+    margin: 0;
+    color: black;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.subtitulo {
+    margin: 10px 0;
+    color: #333;
+    font-size: 18px;
+}
+
+.descripcion {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+/* Inputs */
+.input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.input:focus {
+    border-color: #3cab2f;
+    outline: none;
+    box-shadow: 0 0 5px rgba(60, 171, 47, 0.3);
+}
+
+/* Botón */
+.btn-guardar {
+    width: 100%;
+    padding: 12px;
+    background-color: #3cab2f;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-guardar:hover {
+    background-color: #329b26;
+}
+
+
+
+
+
+.barra-contenido {
+    display: flex;
+    justify-content: space-between; /* separa izquierda y derecha */
+    align-items: center;            /* centra verticalmente */
+    width: 100%;                     /* ocupa todo el ancho */
+}
+
+.cerrar {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.cerrar:hover {
+    text-decoration: underline;
+}
+
+.input-con-usuario {
+    position: relative;
+    width: 100%;
+    margin-bottom: 0px;
+}
+
+
+.password-wrapper {
+    position: relative;
+    margin-bottom: 0px; /* igual que los otros inputs */
+}
+
+.password-wrapper .input {
+    width: 95%;
+    padding-right: 35px; /* espacio para el ojo */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.password-wrapper i {
+    position: absolute;
+    top: 35%;
+    right: 0px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #666;
+    font-size: 16px;
+}
+.alerta {
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    font-weight: 500;
+    animation: aparecer 0.4s ease-in-out;
+}
+
+/* Éxito */
+.alerta.success {
+    background-color: #d4edda;
+    color: #155724;
+    border-left: 5px solid #28a745;
+}
+
+/* Error */
+.alerta.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-left: 5px solid #dc3545;
+}
+
+/* Animación */
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

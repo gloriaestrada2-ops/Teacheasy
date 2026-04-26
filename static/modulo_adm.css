@@ -1,0 +1,310 @@
+/* ===========================
+   MODULO ADMINISTRACION
+=========================== */
+
+.body-panel {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #f4f6f9;
+}
+
+/* Barra superior */
+.barra-superior {
+    background: #3cab2f;
+    padding: 15px 30px;
+    color: white;
+}
+
+.barra-contenido {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.panel-texto {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.volver {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.volver:hover {
+    text-decoration: underline;
+}
+
+/* Contenedor */
+.panel-container {
+    padding: 20px 60px;
+}
+
+/* Logo */
+.logo-panel {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo {
+    width: 70px;
+}
+
+.logo-panel h1 {
+    margin: 0;
+}
+
+.titulo-panel {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    font-size: 30px;
+}
+
+/* Secciones */
+.seccion {
+    margin-bottom: 40px;
+}
+
+.seccion h3 {
+    margin-bottom: 15px;
+}
+/* ===========================
+   TABLA USUARIOS
+=========================== */
+
+.tabla-scroll {
+    max-height: 400px;   /* Aproximadamente 10 filas */
+    overflow-y: auto;    
+    border-radius: 10px;
+}
+
+/* IMPORTANTE: cambiar collapse por separate */
+.tabla-usuarios {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Encabezado fijo */
+.tabla-usuarios thead th {
+    position: sticky;
+    top: 0;
+    background: #3cab2f;
+    color: white;
+    z-index: 2;
+}
+
+/* Celdas */
+.tabla-usuarios th,
+.tabla-usuarios td {
+    padding: 12px;
+    text-align: center;
+}
+
+/* Filas alternadas */
+.tabla-usuarios tbody tr:nth-child(even) {
+    background: #f2f2f2;
+}
+
+
+/* Botones acciones */
+.acciones a {
+    padding: 6px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+    margin: 0 5px;
+}
+
+.btn-editar {
+    background: #2e8b1e;
+    color: white;
+}
+
+.btn-editar:hover {
+    background: #256d17;
+}
+
+.btn-eliminar {
+    background: #d9534f;
+    color: white;
+}
+
+.btn-eliminar:hover {
+    background: #c9302c;
+}
+
+/* ===========================
+   GESTION CONTENIDO
+=========================== */
+
+.contenido {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+.contenido-izq {
+    width: 60%;
+}
+
+.item-contenido {
+    display: flex;
+    justify-content: space-between;
+    background: white;
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+}
+
+.btn-gestionar {
+    background: #3cab2f;
+    color: white;
+    padding: 5px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+.btn-gestionar:hover {
+    background: #2e8b1e;
+}
+
+/* ===========================
+   BACKUP
+=========================== */
+
+.contenido-der {
+    width: 35%;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.btn-backup {
+    display: inline-block;
+    margin-top: 15px;
+    background: #3cab2f;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.btn-backup:hover {
+    background: #2e8b1e;
+}
+
+.tabla-scroll {
+    max-height: 400px;   /* Ajusta hasta que aprox. se vean 10 filas */
+    overflow-y: auto;    /* Activa scroll vertical */
+    border: 1px solid #ddd;
+}
+
+/* ===========================
+   HEADER TABLA (Buscar + Agregar)
+=========================== */
+
+.tabla-header {
+    display: flex;
+    justify-content: flex-end; /* Todo a la derecha */
+    margin-bottom: 15px;
+}
+
+.acciones-derecha {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* espacio entre buscador y botón */
+}
+
+/* Buscador */
+.input-buscar {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    width: 220px;
+}
+
+/* Botón agregar */
+.btn-agregar {
+    background: #3cab2f;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.btn-agregar:hover {
+    background: #2e8b1e;
+}
+
+/* ================= MODAL ================= */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-box {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    width: 350px;
+    animation: aparecer 0.2s ease-in-out;
+}
+
+.modal-icono {
+    font-size: 40px;
+    color: #e74c3c;
+    margin-bottom: 10px;
+}
+
+.modal-botones {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-cancelar {
+    background: #bdc3c7;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-confirmar {
+    background: #e74c3c;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+.btn-confirmar:hover {
+    background: #c0392b;
+}
+
+@keyframes aparecer {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Agregar Usuario</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='registro.css') }}">
+    <!-- Font Awesome para los ojos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+<!-- Barra superior verde -->
+<div class="barra-superior">
+    <div class="barra-contenido">
+        <span></span>
+        <a href="{{ url_for('modulo_administracion') }}" class="cerrar">Volver al Módulo</a>
+    </div>
+</div>
+
+<img src="{{ url_for('static', filename='fondo.png') }}" 
+     class="imagen-superior" 
+     alt="Decoración">
+
+<img src="{{ url_for('static', filename='fondo1.png') }}" 
+     class="imagen-derecha-abajo" 
+     alt="Decoración">
+
+<div class="container">
+    <div class="registro-box">
+
+        <!-- Logo y título -->
+        <div class="titulo-con-logo">
+            <img src="{{ url_for('static', filename='logo.png') }}" 
+                 class="logo" 
+                 alt="Logo">
+            <h1 class="titulo">TEACHEASY</h1>
+        </div>
+
+        <h2 class="subtitulo">Nuevo Usuario</h2>
+        <p class="descripcion">
+            Completa la siguiente información para registrarte en el sistema.
+        </p>
+
+         {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alerta {{ category }}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+        <form method="POST" action="{{ url_for('agregar_usuario_admin') }}">
+            <input type="text" 
+                   name="nombre"
+                   placeholder="Nombre completo"
+                   class="input"
+                   required>
+
+            <input type="email" 
+                   name="correo"
+                   placeholder="Correo electrónico"
+                   class="input"
+                   required>
+
+            <!-- Contraseña -->
+            <div class="input-con-usuario password-wrapper">
+                <input type="password" 
+                       id="contrasena" 
+                       name="contrasena" 
+                       placeholder="Contraseña" 
+                       class="input"
+                       required>
+                <i class="fas fa-eye toggle-password" id="togglePassword"></i>
+            </div>
+
+            <!-- Confirmar contraseña -->
+            <div class="input-con-usuario password-wrapper">
+                <input type="password" 
+                       id="confirmar_contrasena" 
+                       name="confirmar_contrasena" 
+                       placeholder="Confirmar contraseña" 
+                       class="input"
+                       required>
+                <i class="fas fa-eye toggle-password" id="toggleConfirmPassword"></i>
+            </div>
+
+            <select name="rol" class="input" required>
+                <option value="">Selecciona un rol</option>
+                <option value="ADMIN">ADMIN</option>
+                <option value="DOCENTE">DOCENTE</option>
+            </select>
+
+            <input type="hidden" name="fecha_registro" value="{{ fecha_actual }}">
+
+            <!-- Esto va dentro del form -->
+            <input type="hidden" name="requiere_cambio" value="1">
+
+            <button type="submit" class="btn-guardar">Guardar</button>
+        </form>
+
+    </div>
+</div>
+
+ 
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    function setupToggle(toggleId, inputId) {
+        const toggle = document.getElementById(toggleId);
+        const input = document.getElementById(inputId);
+        toggle.addEventListener('click', () => {
+            input.type = input.type === 'password' ? 'text' : 'password';
+            toggle.classList.toggle('fa-eye');
+            toggle.classList.toggle('fa-eye-slash');
+        });
+    }
+
+    setupToggle('togglePassword', 'contrasena');
+    setupToggle('toggleConfirmPassword', 'confirmar_contrasena');
+});
+</script>
+
+<script>
+setTimeout(() => {
+    const alertas = document.querySelectorAll('.alerta');
+    alertas.forEach(alerta => {
+        alerta.style.opacity = "0";
+        alerta.style.transition = "opacity 0.5s";
+        setTimeout(() => alerta.remove(), 500);
+    });
+}, 3000);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,310 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #f4f6f9;
+}
+
+/* ===========================
+   MODULO ADMINISTRACION
+=========================== */
+
+.body-panel {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #f4f6f9;
+}
+
+/* Barra superior */
+.barra-superior {
+    background: #3cab2f;
+    padding: 15px 30px;
+    color: white;
+}
+
+.barra-contenido {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.panel-texto {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.volver {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.volver:hover {
+    text-decoration: underline;
+}
+
+/* Contenedor */
+.panel-container {
+    padding: 20px 60px;
+}
+
+/* Logo */
+.logo-panel {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo {
+    width: 70px;
+}
+
+.logo-panel h1 {
+    margin: 0;
+}
+
+.titulo-panel {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    font-size: 30px;
+}
+
+/* ===========================
+   BOTON Y BUSCADOR CENTRADOS
+=========================== */
+
+.acciones {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.btn-agregar {
+    background: #2eb82e;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-agregar:hover {
+    background: #249924;
+}
+
+.buscador {
+    padding: 12px 20px;
+    width: 280px;
+    border-radius: 25px;
+    border: 1px solid #ccc;
+    outline: none;
+    transition: 0.3s;
+}
+
+.buscador:focus {
+    border-color: #2eb82e;
+    box-shadow: 0 0 5px rgba(46, 184, 46, 0.4);
+}
+
+/* ===========================
+   UNIDAD
+=========================== */
+
+.unidad {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    margin-bottom: 40px;
+}
+
+.info-unidad h3 {
+    color: #2eb82e;
+}
+
+/* ===========================
+   3 RECURSOS POR FILA
+=========================== */
+
+.temas-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 exactos */
+    gap: 25px;
+    margin-top: 20px;
+}
+
+/* ===========================
+   CARD
+=========================== */
+
+.card-tema {
+    background: #f9fdf9;
+    padding: 20px;
+    border-radius: 15px;
+    border: 1px solid #d4f5d4;
+    transition: 0.3s;
+}
+
+.card-tema:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+.card-tema h4 {
+    margin-top: 0;
+    color: #1e7e1e;
+}
+
+/* Vista previa */
+
+.vista-previa iframe,
+.vista-previa img {
+    width: 100%;
+    height: 180px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+/* Enlace */
+.vista-enlace {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.vista-enlace a {
+    text-decoration: none;
+    font-weight: bold;
+    color: #2eb82e;
+}
+
+/* Botones editar/eliminar */
+
+.acciones-card {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-editar {
+    background: #4caf50;
+    border: none;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+.btn-eliminar {
+    background: #e74c3c;
+    border: none;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media (max-width: 992px) {
+    .temas-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .temas-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+
+
+
+
+/* ================= MODAL ================= */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-box {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    width: 350px;
+    animation: aparecer 0.2s ease-in-out;
+}
+
+.modal-icono {
+    font-size: 40px;
+    color: #e74c3c;
+    margin-bottom: 10px;
+}
+
+.modal-botones {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-cancelar {
+    background: #bdc3c7;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-confirmar {
+    background: #e74c3c;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+.btn-confirmar:hover {
+    background: #c0392b;
+}
+
+@keyframes aparecer {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.contador-util {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.btn-util {
+    margin-top: 8px;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    background-color: #28a745;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-util:hover {
+    background-color: #218838;
+}
